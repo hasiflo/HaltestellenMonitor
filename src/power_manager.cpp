@@ -35,9 +35,16 @@ void PowerManager::configure_wifi_manager() {
     static String prompt_filter_eva = StringDatabase::GetEVAFilterPrompt();
     static String val_filter_eva    = config.get_eva_filter();
 
+    static String prompt_linzag = StringDatabase::GetLinzAGPrompt();
+    static String val_linzag    = config.get_linzag();
+
+    static String prompt_filter_linzag = StringDatabase::GetLinzAGFilterPrompt();
+    static String val_filter_linzag    = config.get_linzag_filter();
+
     static WiFiManagerParameter param_eco(PARAM_ID_ECO, prompt_eco.c_str(), String(config.get_eco_mode()).c_str(), 2);
     static WiFiManagerParameter param_rbl(PARAM_ID_RBL, prompt_rbl.c_str(), config.get_rbl().c_str(), 64);
     static WiFiManagerParameter param_eva(PARAM_ID_EVA, prompt_eva.c_str(), config.get_eva().c_str(), 64);
+    static WiFiManagerParameter param_linzag(PARAM_ID_LINZAG, prompt_linzag.c_str(), config.get_linzag().c_str(), 64);
     static WiFiManagerParameter param_count(
         PARAM_ID_COUNT,
         prompt_count.c_str(),
@@ -46,6 +53,7 @@ void PowerManager::configure_wifi_manager() {
     );
     static WiFiManagerParameter param_filter_rbl(PARAM_ID_FILTER_RBL, prompt_filter_rbl.c_str(), config.get_rbl_filter().c_str(), 64);
     static WiFiManagerParameter param_filter_eva(PARAM_ID_FILTER_EVA, prompt_filter_eva.c_str(), config.get_eva_filter().c_str(), 64);
+    static WiFiManagerParameter param_filter_linzag(PARAM_ID_FILTER_LINZAG, prompt_filter_linzag.c_str(), config.get_linzag_filter().c_str(), 64);
     static WiFiManagerParameter html_hline("<hr>");
 
     // 3. Add to manager
@@ -56,6 +64,9 @@ void PowerManager::configure_wifi_manager() {
     wifi_manager.addParameter(&html_hline);
     wifi_manager.addParameter(&param_eva);
     wifi_manager.addParameter(&param_filter_eva);
+    wifi_manager.addParameter(&html_hline);
+    wifi_manager.addParameter(&param_linzag);
+    wifi_manager.addParameter(&param_filter_linzag);
     wifi_manager.addParameter(&html_hline);
     wifi_manager.addParameter(&param_count);
 }
@@ -76,6 +87,10 @@ void PowerManager::save_wfi_manager_parameters(WiFiManager& wifi_manager){
             config.set_rbl_filter(parameter.getValue());
         } else if (id == PARAM_ID_FILTER_EVA){
             config.set_eva_filter(parameter.getValue());
+        } else if (id == PARAM_ID_LINZAG){
+            config.set_linzag(parameter.getValue());
+        } else if (id == PARAM_ID_FILTER_LINZAG){
+            config.set_linzag_filter(parameter.getValue());
         } else if (id == PARAM_ID_COUNT){
             config.set_number_lines(String(parameter.getValue()).toInt());
         }
@@ -168,11 +183,11 @@ void PowerManager::reconfigure() {
 
         this->save_wfi_manager_parameters(wifi_manager);
 
-        wifi_manager.stopWebPortal();
+        wifi_manager.stopWebPortal();     
 
         this->_tft.fillScreen(COLOR_BG);
         this->_tft.setCursor(0,0);
-        this->_tft.println("\n\nConnecting to WiFi...");
+        this->_tft.println("\n\nConnecting to WiFi...");      
 
         if (!wifi_manager.autoConnect()) {
             ESP.restart();
@@ -180,6 +195,7 @@ void PowerManager::reconfigure() {
             this->_tft.fillScreen(COLOR_BG);
             this->task_resume();
         }
+        this->backlight_on(100.0);
         screen.release();
     }
 }
@@ -433,14 +449,14 @@ void PowerManager::task_config_portal(void *pvParameters) {
             if(config.get_eco_mode() == ECO_HEAVY) {
                 pm->wifi_start();
             }
-            pm->backlight_on(100);
         }
         pm->reconfigure();
         if(pm->is_eco_active()) {
-            pm->display_off();
             if (config.get_eco_mode() == ECO_HEAVY) {
                 pm->wifi_stop();
             }
+        }else{
+            pm->display_on(); // Backlight might be off due to eco mode, ensure it's on after reconfiguration
         }
     }
 }

@@ -14,6 +14,8 @@
 #define PREF_RBL ("STOP_ID")
 #define PREF_EVA_FILTER ("EVA_FILTER")
 #define PREF_EVA ("EVA_NR")
+#define PREF_LINZAG ("LINZAG_STOP")
+#define PREF_LINZAG_FILTER ("LINZAG_FILTER")
 #define PREF_ECO_MODE ("ECO_MODE")
 #define PREF_ECO_STATE ("ECO_STATE")
 #define PREF_BRIGHTNESS ("BRIGHTNESS")
@@ -56,6 +58,9 @@ class Configuration {
         /* OEBB Configuration */
         String ram_eva_filter;
         String ram_eva;
+        /* LinzAG Configuration */
+        String ram_linzag_filter;
+        String ram_linzag;
         /* Power Mode Configuration */
         EcoMode ram_eco_mode;
         EcoModeState ram_eco_state;
@@ -92,6 +97,12 @@ class Configuration {
 
         void set_eva(const String& value);
         const String& get_eva();
+
+        void set_linzag_filter(const String& value);
+        const String& get_linzag_filter();
+
+        void set_linzag(const String& value);
+        const String& get_linzag();
 
         void set_eco_mode(EcoMode value);
         void set_eco_mode(int32_t value);

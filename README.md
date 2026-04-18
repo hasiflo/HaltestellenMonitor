@@ -1,9 +1,9 @@
 [![PlatformIO Build](https://github.com/Prindl/WienerLinienMonitor/actions/workflows/main.yml/badge.svg)](https://github.com/Prindl/WienerLinienMonitor/actions/workflows/main.yml)
-# Wiener Linien + ÖBB ESP32-S3 Public Transport Departure Monitor
+# Wiener Linien + ÖBB + LinzAG ESP32-S3 Public Transport Departure Monitor
 
-This repository is a reworked version of the [original one by coppermilk](https://github.com/coppermilk/wiener_linien_esp32_monitor).
+This repository is a reworked version of the [original one by Prindl](https://github.com/Prindl/WienerLinienMonitor).‚
 
-**Brief description:** The ESP32-S3 Public Transport Departure Monitor project is a small device based on the ESP32-S3 platform. It allows you to track public transport departures in real time and receive a countdown to the next departures. The project is based on the use of open data from the City of Vienna provided by Wiener Linien. (Data source: City of Vienna - https://data.wien.gv.at)
+**Brief description:** The ESP32-S3 Public Transport Departure Monitor project is a small device based on the ESP32-S3 platform. It allows you to track public transport departures in real time and receive a countdown to the next departures. The project supports multiple transit providers including Wiener Linien (Vienna), ÖBB (Austrian Federal Railways), and LinzAG (Linz public transport). (Data source: City of Vienna - https://data.wien.gv.at, LinzAG - https://www.linzag.at)
 
 ## Key Features
 - **Real-time Countdown**: Stay informed about the next public transport departure times.
@@ -14,6 +14,7 @@ This repository is a reworked version of the [original one by coppermilk](https:
 
 ## Enhancements In This Repository:
 - **Support for ÖBB Trainstations**
+- **Support for LinzAG Public Transport**: Full integration with Linz public transport system including trams, buses, and other LinzAG services
 - **Screen Dimming**: The backlight of the Display can be dimmed to 4 different brightness levels (25%, 50%, 75% and 100%)
 - **Power Saving Modes**: Different modes for power saving are enabled automatically when no data is received.
 - **User Button Control**: Each Button now supports 3 different types of control - short, long and double press.
@@ -24,7 +25,16 @@ This repository is a reworked version of the [original one by coppermilk](https:
 ## More Information
 Each monitor now displays the name of the stop and if the vehicle is accessible to wheelchairs. Vehicles that have different directions are combined in a single monitor - e.g. the tram is being withdrawn from the railway. When only one monitor is available it can show up to 6 vehicles, depending on the configured layout.
 
-Enter an EVA number to track trainstation from the ÖBB!
+### Transit Provider Configuration:
+- **Wiener Linien**: Enter RBL (Rechnergestütztes Betriebsleitsystem) numbers for Vienna public transport stops
+- **ÖBB**: Enter an EVA number to track train stations from the Austrian Federal Railways
+- **LinzAG**: Enter stop IDs for Linz public transport (trams, buses, etc.)
+
+### Line Filtering:
+All three transit providers support line filtering through the configuration portal:
+- **RBL Filter**: Filter specific lines for Wiener Linien stops
+- **EVA Filter**: Filter specific trains for ÖBB stations
+- **LinzAG Filter**: Filter specific lines for LinzAG stops (comma-separated line numbers or names, e.g., "1,2,11,N25")
 
 ## Dimming Button
 Short pressing on the Dimming Button (right of the USB port) will dim the screen.

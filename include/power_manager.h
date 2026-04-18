@@ -15,6 +15,8 @@
 #define PARAM_ID_FILTER_RBL "filter_rbl"
 #define PARAM_ID_EVA "eva"
 #define PARAM_ID_FILTER_EVA "filter_eva"
+#define PARAM_ID_LINZAG "linzag"
+#define PARAM_ID_FILTER_LINZAG "filter_linzag"
 #define PARAM_ID_COUNT "lines_count"
 
 extern void task_screen_update(void* pvParameters);

@@ -12,6 +12,7 @@
 #include "screen.h"
 #include "traffic.h"
 #include "user_button.h"
+#include "linz_ag.h"
 #include "wiener_linien.h"
 
 #define DEBUG
@@ -36,6 +37,7 @@ ButtonTaskConfig button_2_cfg;
 
 WLDeparture wl_departure = WLDeparture();
 OEBBDeparture oebb_departure = OEBBDeparture();
+LinzAGDeparture linzag_departure = LinzAGDeparture();
 
 /* Task Functions */
 
@@ -46,11 +48,13 @@ void task_data_coordinator(void* pvParameters) {
     static std::vector<Monitor> combined_data;
     static std::vector<Monitor> wl_data;
     static std::vector<Monitor> oebb_data;
+    static std::vector<Monitor> linzag_data;
     static uint32_t no_data_counter = 0;
 
     combined_data.reserve(32);
     wl_data.reserve(16);
     oebb_data.reserve(16);
+    linzag_data.reserve(16);
 
     while (true) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
@@ -65,6 +69,10 @@ void task_data_coordinator(void* pvParameters) {
         if(config.get_eva().length()) {
             oebb_departure.get_latest_snapshot(oebb_data);
             combined_data.insert(combined_data.end(), oebb_data.begin(), oebb_data.end());
+        }
+        if(config.get_linzag().length()) {
+            linzag_departure.get_latest_snapshot(linzag_data);
+            combined_data.insert(combined_data.end(), linzag_data.begin(), linzag_data.end());
         }
         
         if (combined_data.size() > 0) {
@@ -305,6 +313,8 @@ void setup() {
     }
     // Setup is finished, setup WienerLinien Timer
     wl_departure.setup();
+    // Setup LinzAG Timer
+    linzag_departure.setup();
     // Requires Internet to fetch station ID
     if(!pm.is_eco_active()){
         oebb_departure.setup();
@@ -338,6 +348,7 @@ void setup() {
     if (status == pdPASS) {
         wl_departure.set_notification(data_coordinator);
         oebb_departure.set_notification(data_coordinator);
+        linzag_departure.set_notification(data_coordinator);
     } else {
         Serial.printf("Could not create data coordinator task: %d\n", status);
     }

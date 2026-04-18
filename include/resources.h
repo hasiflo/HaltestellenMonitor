@@ -42,6 +42,21 @@ private:
     "Example: \"S45,S3\".<br><br>"
     "<b>Filter EVA:</b>";
 
+    const static constexpr char* LinzAGPrompt =
+    "LinzAG Stop:"
+    "<br>Enter the stop ID (name_dm) for the LinzAG departure monitor."
+    "<br>Find your stop ID with following request: https://www.linzag.at/static/XML_STOPFINDER_REQUEST?locationServerActive=1&outputFormat=XML&type_sf=any&name_sf=landwiedstrasse"
+    "<br> and search for \"stateless\" or \"id\"."
+    "<br>Example: \"60501100\" for Rudolfstrasse"
+    "<br><br><b>LinzAG Stop:</b>";
+
+    const static constexpr char* LinzAGFilterPrompt =
+    "<i>Optional.</i>"
+    "Filter the lines to show by comma-separating the line numbers."
+    "If empty, all lines will be shown.<br>"
+    "Example: \"3,50\".<br><br>"
+    "<b>Filter LinzAG:</b>";
+
    const static constexpr char* EcoPrompt = 
       "Select the Power Saving Mode. Can be enabled manually via short click on reset button or automatically if no data is received for 5 minutes (a stop with no nightline)."
       "<br>&nbsp;&nbsp;1=Light [Display Off]"
@@ -71,7 +86,11 @@ private:
    static String GetRBLFilterPrompt();
 
    static String GetEVAFilterPrompt();
-   
+
+   static String GetLinzAGPrompt();
+
+   static String GetLinzAGFilterPrompt();
+
    static String GetPowerModePrompt();
 
    /**

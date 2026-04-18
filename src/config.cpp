@@ -15,6 +15,8 @@ void Configuration::load() {
     this->ram_rbl_filter = this->db.getString(PREF_RBL_FILTER);
     this->ram_eva = this->db.getString(PREF_EVA);
     this->ram_eva_filter = this->db.getString(PREF_EVA_FILTER);
+    this->ram_linzag = this->db.getString(PREF_LINZAG);
+    this->ram_linzag_filter = this->db.getString(PREF_LINZAG_FILTER);
     this->ram_eco_mode = static_cast<EcoMode>(this->db.getInt(PREF_ECO_MODE, ECO_LIGHT));
     this->ram_eco_state = static_cast<EcoModeState>(this->db.getInt(PREF_ECO_STATE, ECO_OFF));
     this->ram_brightness = this->db.getDouble(PREF_BRIGHTNESS, 100.0);
@@ -99,6 +101,29 @@ void Configuration::set_eva(const String& value) {
 
 const String& Configuration::get_eva() {
     return this->ram_eva;
+}
+
+void Configuration::set_linzag_filter(const String& value) {
+    this->ram_linzag_filter = value;
+    this->ram_linzag_filter.trim();
+    this->begin();
+    this->db.putString(PREF_LINZAG_FILTER, this->ram_linzag_filter);
+    this->end();
+}
+
+const String& Configuration::get_linzag_filter() {
+    return this->ram_linzag_filter;
+}
+
+void Configuration::set_linzag(const String& value) {
+    this->ram_linzag = value;
+    this->begin();
+    this->db.putString(PREF_LINZAG, this->ram_linzag);
+    this->end();
+}
+
+const String& Configuration::get_linzag() {
+    return this->ram_linzag;
 }
 
 void Configuration::set_eco_mode(EcoMode value) {

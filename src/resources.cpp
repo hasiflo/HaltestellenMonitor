@@ -1,7 +1,7 @@
 #include "resources.h"
 
 String StringDatabase::GetWiFissid() {
-  return "Wiener Linien Monitor";
+  return "Haltestellen-Monitor";
 }
 
 String StringDatabase::GetRBLPrompt() {
@@ -18,6 +18,14 @@ String StringDatabase::GetRBLFilterPrompt() {
 
 String StringDatabase::GetEVAFilterPrompt() {
   return String(EVAFilterPrompt);
+}
+
+String StringDatabase::GetLinzAGPrompt() {
+  return String(LinzAGPrompt);
+}
+
+String StringDatabase::GetLinzAGFilterPrompt() {
+  return String(LinzAGFilterPrompt);
 }
 
 String StringDatabase::GetPowerModePrompt() {
